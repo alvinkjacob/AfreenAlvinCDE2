@@ -21,6 +21,7 @@ def Main():
     # Return values using automatic-numbered keys
     layout = [
         [sg.Text('Please enter your details:')],
+        [sg.Text('Title', size =(15, 1)), sg.InputText()],
         [sg.Text('First Name', size =(15, 1)), sg.InputText()],
         [sg.Text('Surname', size =(15, 1)), sg.InputText()],
         [sg.Text('Age', size =(15, 1)), sg.InputText()],
