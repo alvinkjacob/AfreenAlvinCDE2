@@ -7,7 +7,7 @@ def Main():
     s = socket.socket()
     s.connect((host, port))
 
-    message = input("You are noew connected to the server. Please enter a message-> ")
+    message = input("You are now connected to the server. Please enter a message-> ")
     while message != 'q':
         s.send(message.encode('utf-8'))
 
