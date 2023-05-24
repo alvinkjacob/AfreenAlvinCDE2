@@ -34,16 +34,15 @@ def Main():
     
 
     # message = input("You are now connected to the server. Please enter a message-> ")
-    while True:
-        for x in range(len(values)):
-            event, values = window.read()
-            print(event, values[0], values[1], values[2])
-            s.send(values[x].encode('utf-8'))
-            data=[]*len(values)
-            data[x] = s.recv(1024).decode('utf-8')
-            print("Message received from server: " +str(data[x]))
+    #while True:
+    for value in values.values():
+            #event, values = window.read()
+            print(event, values)
+            s.send(value.encode('utf-8'))
+            data = s.recv(1024).decode('utf-8')
+            print("Message received from server: " +str(data))
             #values[x] = input("->")
-            s.close()
+    s.close()
 
 
     # The input data looks like a simple list 
