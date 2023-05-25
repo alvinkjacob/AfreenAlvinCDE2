@@ -19,8 +19,8 @@ def Main():
         server_sock.sendall(c.recv(1024))
         print("forwarding...")
 
-        c.close()
-        server_sock.close()
+        #c.close()
+        #server_sock.close()
 
     
 

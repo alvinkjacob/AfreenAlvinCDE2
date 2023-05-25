@@ -7,7 +7,7 @@ def Main():
     s = socket.socket()
     s.bind((host, port))
 
-    s.listen(1)
+    s.listen(5)
     print ("Server is runnning ... machines can connect on port 8888")
     c, addr = s.accept()
     print("Connection from: " +str(addr))
