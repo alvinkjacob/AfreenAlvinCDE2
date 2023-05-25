@@ -2,6 +2,7 @@ import socket
 import json
 import PySimpleGUI as sg
 import os.path
+import time
 
 
 def Main():
@@ -11,7 +12,7 @@ def Main():
     employees = {}
 
 
-    s = socket.socket()
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((host, port))
 
     
@@ -52,6 +53,10 @@ def Main():
         s.send(jsonFile.encode('utf-8'))
         print ("Sending your data")
         values.clear()
+        data = s.recv(1024)      # recv data
+        print('From server: ' + repr(data))
+        time.sleep(5)
+        
     s.close()
     
 

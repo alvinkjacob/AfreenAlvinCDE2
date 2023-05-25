@@ -2,22 +2,24 @@ import socket
 
 def Main():
     host = '0.0.0.0'
-    port = 8080
+    port = 8888
 
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s = socket.socket()
     s.bind((host, port))
 
     s.listen(5)
+    print("Listening on" +str(host)+":" +str(port))
 
+    c, addr = s.accept()
+    print("Connection from: " +str(addr))
     while True:
-        c, addr = s.accept()
-        print("Connection from: " +str(addr))
-
-        server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        server_sock.connect(("localhost", 8888))
-
-        server_sock.sendall(c.recv(1024))
-        print("forwarding...")
+        data = c.recv(1024).decode('utf-8')
+        if not data:
+            break
+        print("data received: "+str(data))
+        c.send(data.encode('utf-8'))
+    print("Connection closed: " +str(addr))
+    c.close()
 
         #c.close()
         #server_sock.close()
