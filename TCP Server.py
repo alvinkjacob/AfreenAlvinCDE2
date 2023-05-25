@@ -21,6 +21,7 @@ def Main():
         print ("Sending back in upper case!: " +data)
         c.send(data.encode('utf-8'))
     c.close()
+    
 
 if __name__ == '__main__':
     Main()
