@@ -1,6 +1,9 @@
-import socket       
+import socket  
+
 from threading import Thread         
 
+DATA_FILE = "employee_data.xml"
+BACKUP_INTERVAL = 5  # Backup interval in minutes
 #host = '127.0.0.1'    # listen on the local host only
 #host = 'example.org'  # listen on IP that resolves to this host name
 host = ''              # leave blank to listen on any IP or interface
@@ -21,6 +24,7 @@ def handle_connection(conn, addr):
             break                   # break loop
         print("recv: " + str(data))
         conn.sendall(data)          # send data back
+        
     print("Connection closed: " + str(addr))
     conn.close()                    # close connection
 

@@ -3,6 +3,7 @@ import json
 import PySimpleGUI as sg
 import os.path
 import time
+import webbrowser
 
 
 def Main():
@@ -55,6 +56,14 @@ def Main():
         values.clear()
         data = s.recv(1024)      # recv data
         print('From server: ' + repr(data))
+
+        with open("employee_data.html", "w") as f:
+            f.write(data.decode())
+
+        webbrowser.open("employee_data.html")
+
+
+
         time.sleep(5)
         
     s.close()
