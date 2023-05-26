@@ -32,7 +32,7 @@ def Main():
                 [sg.Submit(), sg.Cancel()]
     ]
 
-    window = sg.Window('Simple data entry window', layout)
+    window = sg.Window('Employee Information Form', layout)
     event, values = window.read()
     print(event, values)
 
