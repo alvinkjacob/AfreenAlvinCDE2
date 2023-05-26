@@ -1,5 +1,5 @@
-import socket  
-
+import socket
+import threading
 from threading import Thread         
 
 DATA_FILE = "employee_data.xml"
@@ -24,7 +24,7 @@ def handle_connection(conn, addr):
             break                   # break loop
         print("recv: " + str(data))
         conn.sendall(data)          # send data back
-        
+
     print("Connection closed: " + str(addr))
     conn.close()                    # close connection
 
@@ -34,5 +34,13 @@ while True:                               # loop for connections ( each in a par
     print("Connection from " +  str(addr))
     t = Thread(target=handle_connection, args=(conn,addr))  # create a new thread
     t.start()                             # start it 
+    num_client = threading.activeCount() - 1
+    if num_client>=2:
+        server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        server_sock.connect(("localhost", 12346))
+
+        server_sock.sendall(conn.recv(1024))
+        print("forwarding...")
+
 
 s.close()

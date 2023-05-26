@@ -1,30 +1,43 @@
 import socket
+import threading
+from threading import Thread         
 
-def Main():
-    host = '0.0.0.0'
-    port = 8888
+DATA_FILE = "employee_data.xml"
+BACKUP_INTERVAL = 5  # Backup interval in minutes
+#host = '127.0.0.1'    # listen on the local host only
+#host = 'example.org'  # listen on IP that resolves to this host name
+host = ''              # leave blank to listen on any IP or interface
+port = 12346         # above 1023 are non-privileged, 1-65535
+  
+s = socket.socket()                 # open a socket
+s.bind((host, port))                # bind to a host and port
+s.listen(5)                         # start listening 
+                                    # optional (in Python 3.5) backlog pending connections
 
-    s = socket.socket()
-    s.bind((host, port))
+print( "Listening on " + str(host) + ":" + str(port))
 
-    s.listen(5)
-    print("Listening on" +str(host)+":" +str(port))
 
-    c, addr = s.accept()
-    print("Connection from: " +str(addr))
-    while True:
-        data = c.recv(1024).decode('utf-8')
-        if not data:
-            break
-        print("data received: "+str(data))
-        c.send(data.encode('utf-8'))
-    print("Connection closed: " +str(addr))
-    c.close()
+def handle_connection(conn, addr):
+    while True:                     # loop to recv data
+        data = conn.recv(1024)      # recv data
+        if not data:                # no more data to recv (socket closed!!)
+            break                   # break loop
+        print("recv: " + str(data))
+        conn.sendall(data)          # send data back
 
-        #c.close()
-        #server_sock.close()
+    print("Connection closed: " + str(addr))
+    conn.close()                    # close connection
 
-    
 
-if __name__ == '__main__':
-    Main()
+while True:                               # loop for connections ( each in a parallel thread )
+    conn, addr = s.accept()               # block and wait for incoming connections
+    print("Connection from " +  str(addr))
+    t = Thread(target=handle_connection, args=(conn,addr))  # create a new thread
+    t.start()                             # start it 
+    num_client = threading.activeCount() - 1
+    print(num_client)
+    if num_client>=3:
+        print("busy")
+
+
+s.close()
