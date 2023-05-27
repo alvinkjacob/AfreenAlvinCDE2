@@ -9,13 +9,10 @@ import webbrowser
 def Main():
     turn = None
     host = '127.0.0.1'
-    port = 8888
+    ports = [8888, 12346]
     employees = {}
 
-
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect((host, port))
-
+            
     
 
     # Add some color to the window
@@ -36,6 +33,7 @@ def Main():
     event, values = window.read()
     print(event, values)
 
+
     while bool(values) == True:
         firstname = values[0]
         surname = values[1]
@@ -50,17 +48,27 @@ def Main():
         }
         print(employees)
 
-        jsonFile = json.dumps(employees)
-        s.send(jsonFile.encode('utf-8'))
-        print ("Sending your data")
-        values.clear()
-        data = s.recv(1024)      # recv data
-        print('From server: ' + repr(data))
+        for port in ports:
+            try:
+                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                s.connect((host, port))
 
-        with open("employee_data.html", "w") as f:
-            f.write(data.decode())
+                jsonFile = json.dumps(employees)
+                s.send(jsonFile.encode('utf-8'))
+                print ("Sending your data")
+                values.clear()
+                data = s.recv(1024)      # recv data
+                print('From server: ' + repr(data))
 
-        webbrowser.open("employee_data.html")
+                with open("employee_data.html", "w") as f:
+                    f.write(data.decode())
+
+                webbrowser.open("employee_data.html")
+                break  # Break the loop if a successful connection is made
+            except Exception as e:
+                print(f"Failed to connect to {host}: {e}")
+
+        
 
 
 

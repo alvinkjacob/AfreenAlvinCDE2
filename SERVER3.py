@@ -2,6 +2,7 @@ import socket
 import threading
 from threading import Thread         
 
+#count = 0
 DATA_FILE = "employee_data.xml"
 BACKUP_INTERVAL = 5  # Backup interval in minutes
 #host = '127.0.0.1'    # listen on the local host only
@@ -30,17 +31,20 @@ def handle_connection(conn, addr):
 
 
 while True:                               # loop for connections ( each in a parallel thread )
-    conn, addr = s.accept()               # block and wait for incoming connections
-    print("Connection from " +  str(addr))
-    t = Thread(target=handle_connection, args=(conn,addr))  # create a new thread
-    t.start()                             # start it 
-    num_client = threading.activeCount() - 1
-    if num_client>=2:
-        server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        server_sock.connect(("localhost", 12346))
+    conn, addr = s.accept()               
+    #count+=1                          
+    # if count>=2:
+        
+    #     server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    #     server_sock.connect(("localhost", 12346))
 
-        server_sock.sendall(conn.recv(1024))
-        print("forwarding...")
+    #     server_sock.sendall(conn.recv(1024))
+    #     print("forwarding...")
+    # else:
+    print("Connection from " +  str(addr)) 
+    t = Thread(target=handle_connection, args=(conn,addr))  # create a new thread
+    t.start()# start it   
+     
 
 
 s.close()
