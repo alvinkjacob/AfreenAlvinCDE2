@@ -58,15 +58,21 @@ def display_error(values_invalid):
 def Main():
     turn = None
     host = '127.0.0.1'
-    port = 8888
+    ports = [8888, 12346]
     employees = {}
 
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((host, port))
+        s.connect((host, ports[0]))
+        
     except socket.error as msg:
-        print("Couldn't connect with the socket-server: %s" % msg)
-        sys.exit(1)
+        print("Couldn't connect with the socket-server: %s" % msg + "Trying another server...")
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.connect((host, ports[1]))
+        except socket.error as msg:
+            print("Couldn't connect with either socket-server: %s" % msg)
+            sys.exit(1)
             
     
 
@@ -114,7 +120,7 @@ def Main():
                     s.send(jsonFile.encode('utf-8'))
                     print ("Sending your data")
                     values.clear()
-                    
+
                     try:
                         data = s.recv(1024)      # recv data
                         print('From server: data received: ' + repr(data))
