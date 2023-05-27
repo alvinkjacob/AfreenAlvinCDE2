@@ -5,6 +5,7 @@ import os.path
 import time
 import webbrowser
 import re
+import sys
 
 def validate(values):
     is_valid=True
@@ -60,9 +61,12 @@ def Main():
     port = 8888
     employees = {}
 
-    
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect((host, port))
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((host, port))
+    except socket.error as msg:
+        print("Couldn't connect with the socket-server: %s" % msg)
+        sys.exit(1)
             
     
 
