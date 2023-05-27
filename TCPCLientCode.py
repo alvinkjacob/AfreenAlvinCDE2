@@ -114,8 +114,14 @@ def Main():
                     s.send(jsonFile.encode('utf-8'))
                     print ("Sending your data")
                     values.clear()
-                    data = s.recv(1024)      # recv data
-                    print('From server: ' + repr(data))
+                    
+                    try:
+                        data = s.recv(1024)      # recv data
+                        print('From server: data received: ' + repr(data))
+                        time.sleep(5)
+
+                    except:
+                        print("Didn't receive confirmation data back from server", str(e))
 
                     with open("employee_data.html", "w") as f:
                         f.write(data.decode())
