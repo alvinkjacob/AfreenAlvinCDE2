@@ -33,3 +33,5 @@ Steps to send employee information from 1 client to the server
 9) Navigate to the cmd window that is connected to TCPCLientCode. You should be able to view messages that relate to the data that you have submitted in the GUI, 'Sending your data' confirmation message that indicates that the data is being sent from client to server, and the 'from server...' message that retrieves the information recieved by the server. 
 
 To test for multi-threading by sending information from multiple clients to 1 server, follow the steps to 'send employee information from 1 client to the server' but after step 6, repeat steps 4-6 depending on the number of clients you want to create, and then continue from step seven onwards. Each time that there is a client connection established message in the server cmd window, there should be a different source port each time, e.g. 'Connection from ('138.0.0.2', 54650)', 'Connection from ('138.0.0.2', 54789)'. The different source ports indicate the different clients. 
+
+-----------------------------------------------------------------------------------------------------------------------------------
