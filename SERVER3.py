@@ -1,47 +1,56 @@
 import socket
 import threading
-from threading import Thread         
-
-#count = 0
-DATA_FILE = "employee_data.xml"
-BACKUP_INTERVAL = 5  # Backup interval in minutes
-#host = '127.0.0.1'    # listen on the local host only
-#host = 'example.org'  # listen on IP that resolves to this host name
-host = '127.0.0.1'              # leave blank to listen on any IP or interface
-ports = [8888, 12346, 12347]          # above 1023 are non-privileged, 1-65535
-
-for port in ports:
-    s = socket.socket()                 # open a socket
-    s.bind((host, port))                # bind to a host and port
-    s.listen(2)                         # start listening 
-                                        # optional (in Python 3.5) backlog pending connections
-
-    print( "Listening on " + str(host) + ":" + str(port))
+from threading import Thread
+import webbrowser
 
 
 def handle_connection(conn, addr):
-    while True:                     # loop to recv data
-        data = conn.recv(1024)      # recv data
-        if not data:                # no more data to recv (socket closed!!)
-            break                   # break loop
-        print("recv: " + str(data))
-        with open("employee_data.html", "a") as f:
-            f.write(data.decode())
+    while True:
+        try:
+            data = conn.recv(1024)
+            if not data:
+                break
+            print("recv: " + str(data))
+            with open("employee_data.html", "a", newline=None) as f:
+                f.write('\n' + data.decode() + '\n')
+
             webbrowser.open("employee_data.html")
-        conn.sendall(data)          # send data back
+            conn.sendall(data)
+        except Exception as e:
+            print(f"An error occurred whilst receiving data from client {addr}: {str(e)}")
 
     print("Connection closed: " + str(addr))
-    conn.close()                    # close connection
+    conn.close()
 
 
-while True:                               # loop for connections ( each in a parallel thread )
-    conn, addr = s.accept()               
-    print("Connection from " +  str(addr)) 
-    t = Thread(target=handle_connection, args=(conn,addr))  # create a new thread
-    numclient = threading.active_count()
-    print(numclient)
-    t.start()# start it   
-     
+def start_server(port):
+    s = socket.socket()
+    host = ''
+    s.bind((host, port))
+    s.listen(5)
+    print("Listening on " + str(host) + ":" + str(port))
+
+    while True:
+        conn, addr = s.accept()
+        print("Connection from " + str(addr)+ "on"+ str(host) + ":" + str(port)) 
+        t = Thread(target=handle_connection, args=(conn, addr))
+        t.start()
+
+    s.close()
 
 
-s.close()
+def main():
+    ports = [12346, 8888]  # Add the ports you want to host the server on
+
+    threads = []
+    for port in ports:
+        t = threading.Thread(target=start_server, args=(port,))
+        t.start()
+        threads.append(t)
+
+    for t in threads:
+        t.join()
+
+
+if __name__ == "__main__":
+    main()

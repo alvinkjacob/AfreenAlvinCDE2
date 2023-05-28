@@ -9,7 +9,7 @@ BACKUP_INTERVAL = 5  # Backup interval in minutes
 #host = '127.0.0.1'    # listen on the local host only
 #host = 'example.org'  # listen on IP that resolves to this host name
 host = ''              # leave blank to listen on any IP or interface
-port = 12346          # above 1023 are non-privileged, 1-65535
+port = 12357          # above 1023 are non-privileged, 1-65535
   
 s = socket.socket()                 # open a socket
 s.bind((host, port))                # bind to a host and port
