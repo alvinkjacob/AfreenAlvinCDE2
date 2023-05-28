@@ -1,6 +1,7 @@
 import socket
 import threading
-from threading import Thread         
+from threading import Thread 
+import webbrowser        
 
 #count = 0
 DATA_FILE = "employee_data.xml"
@@ -19,12 +20,19 @@ print( "Listening on " + str(host) + ":" + str(port))
 
 
 def handle_connection(conn, addr):
-    while True:                     # loop to recv data
-        data = conn.recv(1024)      # recv data
-        if not data:                # no more data to recv (socket closed!!)
-            break                   # break loop
-        print("recv: " + str(data))
-        conn.sendall(data)          # send data back
+    while True: 
+        try:                    # loop to recv data
+            data = conn.recv(1024)      # recv data
+            if not data:                # no more data to recv (socket closed!!)
+                break                   # break loop
+            print("recv: " + str(data))
+            with open("employee_data.html", "a", newline = None) as f:
+                f.write('\n'+data.decode()+'\n')
+
+            webbrowser.open("employee_data.html")
+            conn.sendall(data)          # send data back
+        except Exception as e:
+            print(f"An error occurred whilst receiving data from client {addr}: {str(e)}")
 
     print("Connection closed: " + str(addr))
     conn.close()                    # close connection

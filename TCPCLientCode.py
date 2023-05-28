@@ -129,10 +129,10 @@ def Main():
                     except:
                         print("Didn't receive confirmation data back from server", str(e))
 
-                    with open("employee_data.html", "w") as f:
+                    with open("employee_data_client.html", "w") as f:
                         f.write(data.decode())
 
-                    webbrowser.open("employee_data.html")
+                    webbrowser.open("employee_data_client.html")
 
                     time.sleep(5)
                     
