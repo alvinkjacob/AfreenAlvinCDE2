@@ -26,9 +26,8 @@ def handle_connection(conn, addr):
             break                   # break loop
         print("recv: " + str(data))
         with open("employee_data.html", "a") as f:
-                        f.write(data.decode())
-
-                    webbrowser.open("employee_data.html")
+            f.write(data.decode())
+            webbrowser.open("employee_data.html")
         conn.sendall(data)          # send data back
 
     print("Connection closed: " + str(addr))
