@@ -4,6 +4,7 @@ from threading import Thread
 import webbrowser
 
 
+
 def handle_connection(conn, addr):
     while True:
         try:
@@ -32,6 +33,13 @@ def start_server(port):
 
     while True:
         conn, addr = s.accept()
+        # count+=1
+        # print(count)                          
+        # if count>=2:
+        #     server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        #     server_sock.connect(("localhost", 12357))
+        #     server_sock.sendall(conn.recv(1024))
+        #     print("forwarding...")
         print("Connection from " + str(addr)+ "on"+ str(host) + ":" + str(port)) 
         t = Thread(target=handle_connection, args=(conn, addr))
         t.start()

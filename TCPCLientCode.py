@@ -13,17 +13,17 @@ def validate(values):
     values_invalid = []
 
     if len(values['-NAME-'])==0:
-        values_invalid.append("[Please enter your first name")
+        values_invalid.append("Please enter your first name")
         is_valid=False
     elif bool(re.match(pattern, values['-NAME-'])) != True:
-        values_invalid.append("Please ensure your name does not contain numbers or special characters (hypens are allowed)")
+        values_invalid.append("Please ensure your name does not contain numbers or special characters (hyphens are allowed)")
         is_valid=False
     
     if len(values['-SURNAME-'])==0:
         values_invalid.append("Please enter your surname")
         is_valid=False
     elif bool(re.match(pattern, values['-SURNAME-'])) != True:
-        values_invalid.append("Please ensure your surname does not contain numbers or special characters (hypens are allowed)")
+        values_invalid.append("Please ensure your surname does not contain numbers or special characters (hyphens are allowed)")
         is_valid=False
     
 
